@@ -5,7 +5,9 @@ import {
   Image,
   Dimensions,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 import {useMovies} from '../hooks/useMovies';
 import {Movie} from '../interfaces/movieInterfaces';
 
@@ -22,6 +24,7 @@ type Prop = {
 
 export default function MovieCardGrid({movies}: Prop) {
   const {isLoading} = useMovies();
+  const navigation = useNavigation();
 
   if (isLoading) {
     return (
@@ -38,7 +41,14 @@ export default function MovieCardGrid({movies}: Prop) {
           const poster = `${BASE_IMG}/w500${item.poster_path}`;
 
           return (
-            <View key={index}>
+            <TouchableOpacity
+              key={index}
+              activeOpacity={0.9}
+              onPress={() =>
+                navigation.dispatch(
+                  CommonActions.navigate('DetailsScreen', item),
+                )
+              }>
               <View style={styles.containerPoster}>
                 <Image
                   source={{uri: poster}}
@@ -46,7 +56,7 @@ export default function MovieCardGrid({movies}: Prop) {
                   resizeMode="center"
                 />
               </View>
-            </View>
+            </TouchableOpacity>
           );
         })}
       </View>

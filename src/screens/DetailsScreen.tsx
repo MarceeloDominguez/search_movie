@@ -1,8 +1,16 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
-import {View, Text, StyleSheet, Image, Dimensions} from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  Dimensions,
+  ActivityIndicator,
+} from 'react-native';
 import {RootStackParams} from '../navigation/Navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
+import {useNavigation} from '@react-navigation/native';
 
 const BASE_IMG = 'https://image.tmdb.org/t/p';
 
@@ -13,17 +21,37 @@ interface Prop
 
 export default function DetailsScreen({route}: Prop) {
   const movie = route.params;
+  const [loading, setLoading] = useState(true);
+  const navigation = useNavigation();
   const image = `${BASE_IMG}/w500${movie.backdrop_path}`;
   const poster = `${BASE_IMG}/w500${movie.poster_path}`;
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 500);
+  }, []);
 
   return (
     <View style={styles.container}>
       <View style={styles.wrapIcons}>
-        <Icon name="chevron-back-outline" size={26} color="#fff" />
+        <Icon
+          name="chevron-back-outline"
+          size={26}
+          color="#fff"
+          onPress={() => navigation.goBack()}
+        />
         <Text style={styles.textDetails}>Detalles</Text>
         <Icon name="bookmark" size={23} color="#fff" />
       </View>
-      <Image source={{uri: image}} style={styles.image} />
+      {loading ? (
+        <ActivityIndicator
+          color="#08547a"
+          size={30}
+          style={styles.activityIndicator}
+        />
+      ) : (
+        <Image source={{uri: image}} style={styles.image} />
+      )}
+
       <View style={styles.containerPosterTitle}>
         <View style={styles.wrapPoster}>
           <Image
@@ -86,5 +114,9 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingLeft: 12,
     paddingTop: 12,
+  },
+  activityIndicator: {
+    width: width,
+    height: height * 0.29,
   },
 });
