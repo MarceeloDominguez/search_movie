@@ -7,10 +7,13 @@ import {
   Image,
   Dimensions,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import {RootStackParams} from '../navigation/Navigation';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
+import InfoMovieDetails from '../components/InfoMovieDetails';
+import TabsDetails from '../components/TabsDetails';
 
 const BASE_IMG = 'https://image.tmdb.org/t/p';
 
@@ -31,7 +34,7 @@ export default function DetailsScreen({route}: Prop) {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.wrapIcons}>
         <Icon
           name="chevron-back-outline"
@@ -49,7 +52,13 @@ export default function DetailsScreen({route}: Prop) {
           style={styles.activityIndicator}
         />
       ) : (
-        <Image source={{uri: image}} style={styles.image} />
+        <View>
+          <Image source={{uri: image}} style={styles.image} />
+          <View style={styles.wrapIconStar}>
+            <Icon name="star-outline" size={17} color="#ff8700" />
+            <Text style={styles.numberVote}>{movie.vote_average}</Text>
+          </View>
+        </View>
       )}
 
       <View style={styles.containerPosterTitle}>
@@ -64,7 +73,9 @@ export default function DetailsScreen({route}: Prop) {
           {movie.title}
         </Text>
       </View>
-    </View>
+      <InfoMovieDetails id={movie.id} loading={loading} />
+      <TabsDetails id={movie.id} />
+    </ScrollView>
   );
 }
 
@@ -118,5 +129,22 @@ const styles = StyleSheet.create({
   activityIndicator: {
     width: width,
     height: height * 0.29,
+  },
+  wrapIconStar: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#363740',
+    paddingHorizontal: 6,
+    paddingVertical: 2,
+    borderRadius: 4,
+  },
+  numberVote: {
+    color: '#ff8700',
+    marginLeft: 3,
+    fontFamily: 'Rubik-Bold',
+    fontSize: 14,
   },
 });
