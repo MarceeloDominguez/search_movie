@@ -35,6 +35,7 @@ const styles = StyleSheet.create({
     opacity: 0.9,
     fontFamily: 'Rubik-Regular',
     lineHeight: 20,
+    marginBottom: 30,
   },
   containerLoading: {
     marginTop: 30,

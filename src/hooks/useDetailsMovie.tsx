@@ -39,7 +39,7 @@ export const useDetailsMovie = (idMovie: number) => {
 
   useEffect(() => {
     getDetailsMovie();
-  }, []);
+  }, [idMovie]);
 
   return {...movieFull, isLoading};
 };

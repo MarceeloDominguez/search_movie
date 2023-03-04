@@ -10,7 +10,6 @@ import {
   Text,
   Pressable,
   ScrollView,
-  ActivityIndicator,
 } from 'react-native';
 import SearchMovie from '../components/SearchMovie';
 import MovieCardGrid from '../components/MovieCardGrid';
@@ -18,6 +17,7 @@ import {useMovies} from '../hooks/useMovies';
 import {CommonActions} from '@react-navigation/native';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParams} from '../navigation/Navigation';
+import Loading from '../components/Loading';
 
 const tabs = ['Próximas', 'Top Ranking', 'Populares'];
 
@@ -35,11 +35,7 @@ export default function HomeScreen({navigation}: Prop) {
   const {nowPlaying, upcoming, topRated, popular, isLoading} = useMovies();
 
   if (isLoading) {
-    return (
-      <View style={styles.containerLoading}>
-        <ActivityIndicator color="#08547a" size={50} />
-      </View>
-    );
+    return <Loading />;
   }
 
   return (
@@ -151,11 +147,5 @@ const styles = StyleSheet.create({
     left: -14,
     fontSize: 80,
     fontFamily: 'Rubik-Regular',
-  },
-  containerLoading: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#26292f',
   },
 });

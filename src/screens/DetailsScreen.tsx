@@ -14,6 +14,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import {useNavigation} from '@react-navigation/native';
 import InfoMovieDetails from '../components/InfoMovieDetails';
 import TabsDetails from '../components/TabsDetails';
+import {useFavoriteMovie} from '../store/moviesFavorites';
 
 const BASE_IMG = 'https://image.tmdb.org/t/p';
 
@@ -29,6 +30,20 @@ export default function DetailsScreen({route}: Prop) {
   const image = `${BASE_IMG}/w500${movie.backdrop_path}`;
   const poster = `${BASE_IMG}/w500${movie.poster_path}`;
 
+  const {addMovieFavorite, removeMovieFavorite, movieFavorite} =
+    useFavoriteMovie(state => state);
+
+  const isFavorite = movieFavorite.includes(movie.id);
+
+  const toggleFavorite = (id: number) => {
+    if (isFavorite) {
+      removeMovieFavorite(id);
+      return;
+    }
+
+    addMovieFavorite(id);
+  };
+
   useEffect(() => {
     setTimeout(() => setLoading(false), 500);
   }, []);
@@ -43,7 +58,12 @@ export default function DetailsScreen({route}: Prop) {
           onPress={() => navigation.goBack()}
         />
         <Text style={styles.textDetails}>Detalles</Text>
-        <Icon name="bookmark" size={23} color="#fff" />
+        <Icon
+          name="bookmark"
+          size={23}
+          color={isFavorite ? '#0296e5' : '#fff'}
+          onPress={() => toggleFavorite(movie.id)}
+        />
       </View>
       {loading ? (
         <ActivityIndicator

@@ -58,7 +58,7 @@ export default function Cast({id}: Prop) {
 const styles = StyleSheet.create({
   scrollContainer: {
     paddingHorizontal: 5,
-    marginTop: 20,
+    marginVertical: 20,
   },
   image: {
     width: 100,
