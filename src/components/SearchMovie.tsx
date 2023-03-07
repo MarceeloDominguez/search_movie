@@ -1,12 +1,20 @@
+import {CommonActions, useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default function SearchMovie() {
+  const navigation = useNavigation();
+
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Qué pelicula quieres ver?</Text>
-      <TouchableOpacity style={styles.containerInput} activeOpacity={1}>
+      <Text style={styles.title}>Qué película quieres ver?</Text>
+      <TouchableOpacity
+        style={styles.containerInput}
+        activeOpacity={1}
+        onPress={() =>
+          navigation.dispatch(CommonActions.navigate('SearchScreen'))
+        }>
         <Text style={styles.textPlaceholder}>Buscar</Text>
         <Icon name="search" size={25} style={styles.iconSearch} />
       </TouchableOpacity>

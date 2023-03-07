@@ -18,7 +18,9 @@ export default function ItemListWatch({id}: Prop) {
     <>
       <View style={styles.wrapIconInfo}>
         <Icon name="star-outline" size={17} color="#ff8700" />
-        <Text style={styles.vote}>{movieFull?.vote_average}</Text>
+        <Text style={styles.vote}>
+          {movieFull?.vote_average?.toLocaleString().slice(0, 3)}
+        </Text>
       </View>
       <View style={styles.wrapIconInfo}>
         <Icon name="list-outline" size={17} color="#92929d" />

@@ -10,15 +10,16 @@ import {useNavigation} from '@react-navigation/native';
 const BASE_IMG = 'https://image.tmdb.org/t/p';
 
 export default function WatchListScreen() {
-  const {movieFavorite, removeMovieFavorite} = useFavoriteMovie(state => state);
-  const {nowPlaying, popular, topRated, upcoming, isLoading} = useMovies();
-  const navigation = useNavigation();
+  const {movieFavorite, removeIdMovieFavorite, ids} = useFavoriteMovie(
+    state => state,
+  );
+  const {isLoading} = useMovies();
 
-  const concatArray = nowPlaying.concat(popular, topRated, upcoming);
-
-  const listWatchFavorites = movieFavorite.map(favorite => {
-    return concatArray.find(item => item.id === favorite);
+  const listWatchFavorites = ids.map(favorite => {
+    return movieFavorite.find(item => item.id === favorite);
   });
+
+  const navigation = useNavigation();
 
   if (isLoading) {
     return <Loading />;
@@ -55,7 +56,7 @@ export default function WatchListScreen() {
                 />
               </View>
               <View style={styles.wrapInfo}>
-                <Text numberOfLines={1} style={styles.titleMovie}>
+                <Text numberOfLines={2} style={styles.titleMovie}>
                   {item?.title}
                 </Text>
                 <ItemListWatch id={item?.id} />
@@ -63,9 +64,9 @@ export default function WatchListScreen() {
               <Icon
                 name="bookmark"
                 size={25}
-                style={{position: 'absolute', bottom: 10, right: 10}}
+                style={styles.iconBookmark}
                 color="#0296e5"
-                onPress={() => removeMovieFavorite(item?.id!)}
+                onPress={() => removeIdMovieFavorite(item?.id!)}
               />
             </View>
           );
@@ -124,5 +125,10 @@ const styles = StyleSheet.create({
     letterSpacing: 0.4,
     fontSize: 16,
     marginBottom: 10,
+  },
+  iconBookmark: {
+    position: 'absolute',
+    bottom: 10,
+    right: 10,
   },
 });

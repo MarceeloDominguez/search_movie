@@ -15,6 +15,7 @@ import {useNavigation} from '@react-navigation/native';
 import InfoMovieDetails from '../components/InfoMovieDetails';
 import TabsDetails from '../components/TabsDetails';
 import {useFavoriteMovie} from '../store/moviesFavorites';
+import {Movie} from '../interfaces/movieInterfaces';
 
 const BASE_IMG = 'https://image.tmdb.org/t/p';
 
@@ -30,18 +31,25 @@ export default function DetailsScreen({route}: Prop) {
   const image = `${BASE_IMG}/w500${movie.backdrop_path}`;
   const poster = `${BASE_IMG}/w500${movie.poster_path}`;
 
-  const {addMovieFavorite, removeMovieFavorite, movieFavorite} =
-    useFavoriteMovie(state => state);
+  const {
+    addIdMovieFavorite,
+    removeIdMovieFavorite,
+    ids,
+    removeMovieFavorite,
+    addMovieFavorite,
+  } = useFavoriteMovie(state => state);
 
-  const isFavorite = movieFavorite.includes(movie.id);
+  const isFavorite = ids.includes(movie.id);
 
-  const toggleFavorite = (id: number) => {
+  const toggleFavorite = (movie: Movie, id: number) => {
     if (isFavorite) {
-      removeMovieFavorite(id);
+      removeIdMovieFavorite(id);
+      removeMovieFavorite(movie);
       return;
     }
 
-    addMovieFavorite(id);
+    addIdMovieFavorite(id);
+    addMovieFavorite(movie);
   };
 
   useEffect(() => {
@@ -62,7 +70,7 @@ export default function DetailsScreen({route}: Prop) {
           name="bookmark"
           size={23}
           color={isFavorite ? '#0296e5' : '#fff'}
-          onPress={() => toggleFavorite(movie.id)}
+          onPress={() => toggleFavorite(movie, movie.id)}
         />
       </View>
       {loading ? (
@@ -73,21 +81,38 @@ export default function DetailsScreen({route}: Prop) {
         />
       ) : (
         <View>
-          <Image source={{uri: image}} style={styles.image} />
+          {movie.backdrop_path ? (
+            <Image source={{uri: image}} style={styles.image} />
+          ) : (
+            <Image
+              source={require('../../assets/image/no-image.jpg')}
+              style={styles.image}
+            />
+          )}
           <View style={styles.wrapIconStar}>
             <Icon name="star-outline" size={17} color="#ff8700" />
-            <Text style={styles.numberVote}>{movie.vote_average}</Text>
+            <Text style={styles.numberVote}>
+              {movie.vote_average.toLocaleString().slice(0, 3)}
+            </Text>
           </View>
         </View>
       )}
 
       <View style={styles.containerPosterTitle}>
         <View style={styles.wrapPoster}>
-          <Image
-            source={{uri: poster}}
-            style={styles.poster}
-            resizeMode="cover"
-          />
+          {loading ? (
+            <ActivityIndicator
+              color="#08547a"
+              size={30}
+              style={styles.poster}
+            />
+          ) : (
+            <Image
+              source={{uri: poster}}
+              style={styles.poster}
+              resizeMode="cover"
+            />
+          )}
         </View>
         <Text numberOfLines={2} style={styles.titleMovie}>
           {movie.title}
@@ -133,7 +158,6 @@ const styles = StyleSheet.create({
   },
   wrapPoster: {
     elevation: 10,
-    backgroundColor: 'red',
     transform: [{translateY: -65}],
     borderRadius: 10,
   },

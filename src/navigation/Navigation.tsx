@@ -40,6 +40,7 @@ const Tabs = () => {
         headerShown: false,
         tabBarShowLabel: false,
         tabBarStyle: styles.tabBarStyle,
+        tabBarHideOnKeyboard: true,
       }}>
       {tabs.map(item => {
         return (
