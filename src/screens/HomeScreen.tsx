@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   View,
   FlatList,
@@ -11,6 +11,7 @@ import {
   Pressable,
   ScrollView,
 } from 'react-native';
+import SplashScreen from 'react-native-splash-screen';
 import SearchMovie from '../components/SearchMovie';
 import MovieCardGrid from '../components/MovieCardGrid';
 import {useMovies} from '../hooks/useMovies';
@@ -33,6 +34,10 @@ interface Prop extends NativeStackScreenProps<RootStackParams> {}
 export default function HomeScreen({navigation}: Prop) {
   const [indexTab, setIndexTab] = useState(0);
   const {nowPlaying, upcoming, topRated, popular, isLoading} = useMovies();
+
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
 
   if (isLoading) {
     return <Loading />;

@@ -134,8 +134,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    marginBottom: 20,
-    marginTop: 10,
+    marginVertical: 20,
   },
   textDetails: {
     color: '#fff',

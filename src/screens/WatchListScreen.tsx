@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
   containerHeader: {
     paddingHorizontal: 15,
     marginBottom: 35,
-    marginTop: 10,
+    marginTop: 20,
     flexDirection: 'row',
     alignItems: 'center',
   },
