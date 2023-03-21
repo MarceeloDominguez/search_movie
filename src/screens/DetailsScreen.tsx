@@ -67,9 +67,9 @@ export default function DetailsScreen({route}: Prop) {
         />
         <Text style={styles.textDetails}>Detalles</Text>
         <Icon
-          name="bookmark"
+          name="bookmark-outline"
           size={23}
-          color={isFavorite ? '#0296e5' : '#fff'}
+          color={isFavorite ? '#0296e5' : '#5d626b'}
           onPress={() => toggleFavorite(movie, movie.id)}
         />
       </View>

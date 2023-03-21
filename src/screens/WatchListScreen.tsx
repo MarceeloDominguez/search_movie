@@ -1,11 +1,18 @@
 import React from 'react';
-import {View, StyleSheet, ScrollView, Text, Image} from 'react-native';
+import {
+  View,
+  StyleSheet,
+  ScrollView,
+  Text,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import {useMovies} from '../hooks/useMovies';
 import {useFavoriteMovie} from '../store/moviesFavorites';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ItemListWatch from '../components/ItemListWatch';
 import Loading from '../components/Loading';
-import {useNavigation} from '@react-navigation/native';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 
 const BASE_IMG = 'https://image.tmdb.org/t/p';
 
@@ -47,7 +54,15 @@ export default function WatchListScreen() {
           const poster = `${BASE_IMG}/w500${item?.poster_path}`;
 
           return (
-            <View style={styles.containerItems} key={index}>
+            <TouchableOpacity
+              style={styles.containerItems}
+              key={index}
+              activeOpacity={1}
+              onPress={() =>
+                navigation.dispatch(
+                  CommonActions.navigate('DetailsScreen', item),
+                )
+              }>
               <View>
                 <Image
                   source={{uri: poster}}
@@ -68,7 +83,7 @@ export default function WatchListScreen() {
                 color="#0296e5"
                 onPress={() => removeIdMovieFavorite(item?.id!)}
               />
-            </View>
+            </TouchableOpacity>
           );
         })}
       </View>

@@ -8,10 +8,13 @@ import DetailsScreen from '../screens/DetailsScreen';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import SearchScreen from '../screens/SearchScreen';
 import WatchListScreen from '../screens/WatchListScreen';
+import InfoActorScreen from '../screens/InfoActorScreen';
+import {Cast} from '../interfaces/castInterface';
 
 export type RootStackParams = {
   Tabs: undefined;
   DetailsScreen: Movie;
+  InfoActorScreen: Cast;
 };
 
 const Stack = createNativeStackNavigator<RootStackParams>();
@@ -82,6 +85,11 @@ export default function Navigation() {
       <Stack.Screen
         name="DetailsScreen"
         component={DetailsScreen}
+        options={{animation: 'none'}}
+      />
+      <Stack.Screen
+        name="InfoActorScreen"
+        component={InfoActorScreen}
         options={{animation: 'none'}}
       />
     </Stack.Navigator>

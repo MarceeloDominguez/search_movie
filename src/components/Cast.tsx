@@ -1,4 +1,5 @@
 import React from 'react';
+import {CommonActions, useNavigation} from '@react-navigation/native';
 import {
   View,
   Text,
@@ -6,6 +7,7 @@ import {
   ScrollView,
   Image,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import {useDetailsMovie} from '../hooks/useDetailsMovie';
 
@@ -15,6 +17,8 @@ type Prop = {
 
 export default function Cast({id}: Prop) {
   const {cast, isLoading} = useDetailsMovie(id);
+  const navigation = useNavigation();
+  //https://api.themoviedb.org/3/person/3131/combined_credits?api_key=59fac2f751f32b407b1ccad78a44e44b&language=es-ES
 
   if (isLoading) {
     return (
@@ -34,7 +38,14 @@ export default function Cast({id}: Prop) {
           const image = `https://image.tmdb.org/t/p/w500/${item.profile_path}`;
 
           return (
-            <View key={index}>
+            <TouchableOpacity
+              activeOpacity={0.8}
+              key={index}
+              onPress={() =>
+                navigation.dispatch(
+                  CommonActions.navigate('InfoActorScreen', item),
+                )
+              }>
               {item.profile_path && (
                 <View>
                   <Image
@@ -47,7 +58,7 @@ export default function Cast({id}: Prop) {
                   </Text>
                 </View>
               )}
-            </View>
+            </TouchableOpacity>
           );
         })}
       </ScrollView>
