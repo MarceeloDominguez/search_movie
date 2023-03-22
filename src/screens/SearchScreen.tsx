@@ -8,6 +8,7 @@ import {
   Text,
   TouchableOpacity,
   Image,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import {useSearchMovie} from '../hooks/useSearchMovie';
@@ -21,7 +22,7 @@ export default function SearchScreen() {
 
   const [textValue, setTextValue] = useState('');
   const debouncedValue = useDebouncedValue(textValue);
-  const {movieResults} = useSearchMovie(debouncedValue);
+  const {movieResults, loading} = useSearchMovie(debouncedValue);
 
   useEffect(() => {
     if (textInputRef.current) {
@@ -55,28 +56,38 @@ export default function SearchScreen() {
           return (
             <View key={index}>
               {item.poster_path && (
-                <TouchableOpacity
-                  activeOpacity={1}
-                  style={styles.containerItem}
-                  onPress={() =>
-                    navigation.dispatch(
-                      CommonActions.navigate('DetailsScreen', item),
-                    )
-                  }>
-                  <Image
-                    source={{uri: poster}}
-                    style={styles.image}
-                    resizeMode="contain"
-                  />
-                  <View style={{flex: 1}}>
-                    <Text numberOfLines={2} style={styles.title}>
-                      {item.title}
-                    </Text>
-                    <Text numberOfLines={4} style={styles.overview}>
-                      {item.overview ? item.overview : 'No hay descripcion'}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+                <>
+                  {loading ? (
+                    <ActivityIndicator
+                      color="#08547a"
+                      size={30}
+                      style={[styles.containerItem, {height: 110}]}
+                    />
+                  ) : (
+                    <TouchableOpacity
+                      activeOpacity={1}
+                      style={styles.containerItem}
+                      onPress={() =>
+                        navigation.dispatch(
+                          CommonActions.navigate('DetailsScreen', item),
+                        )
+                      }>
+                      <Image
+                        source={{uri: poster}}
+                        style={styles.image}
+                        resizeMode="contain"
+                      />
+                      <View style={{flex: 1}}>
+                        <Text numberOfLines={2} style={styles.title}>
+                          {item.title}
+                        </Text>
+                        <Text numberOfLines={4} style={styles.overview}>
+                          {item.overview ? item.overview : 'No hay descripcion'}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  )}
+                </>
               )}
             </View>
           );
