@@ -7,6 +7,10 @@
 </tr>
 </table>
 
+## App in Play Store
+
+ - [Download from Play Store](https://play.google.com/store/apps/details?id=com.searchmovie)
+
 ## Run Locally
 
 Clone the project
